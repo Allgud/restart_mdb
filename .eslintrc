@@ -9,7 +9,9 @@
     "parser": "babel-eslint",
     "env": {
       "browser": true,
-      "jest": true
+      "jest": true,
+      "es6": true,
+      "node": true
     },
     "rules": {
       "curly": ["error"],
@@ -40,7 +42,8 @@
       "react/state-in-constructor": ["off"],
       "react/jsx-props-no-spreading": ["off"],
       "react/static-property-placement": "off",
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "react/function-component-definition": ["off"]
     },
     "settings": {
       "react": {

@@ -1,5 +1,7 @@
 import React,{Component} from "react"
 import "./app.scss"
+import "antd/dist/antd.css"
+import Header from '../Header'
 
 class App extends Component{
     state={
@@ -9,7 +11,11 @@ class App extends Component{
     render(){
         const {text}=this.state
         return(
-            <div className="container">{text}</div>
+            <div className="app">
+                <div className="wrapper">
+                    <Header text={text}/>
+                </div>
+            </div>
         )
     }
 }
