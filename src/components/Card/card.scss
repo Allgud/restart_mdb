@@ -1,14 +1,16 @@
 @import "../../Constats/constats.scss";
 
 .card {
+  flex: 0 0 48%;
   display: flex;
   justify-content: space-between;
   box-shadow: 0px 4px 12px 0px lightgrey;
+  margin-top: 2.5rem;
 }
 
 .card__image {
   width: 40%;
-  border: 1px solid grey;
+  border: 1px solid $borderColor;
   margin: 2px;
 }
 
