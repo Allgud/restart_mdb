@@ -1,4 +1,4 @@
-import {FEATURED_API} from "../Constats/constants"
+import {FEATURED_API, GENRES_API} from "../Constats/constants"
 
 class MovieService {
     async getResource(api) {  
@@ -15,6 +15,10 @@ class MovieService {
     
     getMovies(){
        return this.getResource(FEATURED_API)
+    }
+
+    getGenres(){
+        return this.getResource(GENRES_API)
     }
 }
 

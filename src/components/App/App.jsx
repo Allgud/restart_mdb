@@ -5,16 +5,19 @@ import Header from '../Header'
 import SearchInput from "../SearchInput"
 import Content from "../Content"
 import MovieService from "../../service/Service"
+import {GenresProvider} from "../../context"
 
 class App extends Component{
   state={
-    movies: []
+    movies: [],
+    genres: []
   }
 
   movieService = new MovieService()
 
   componentDidMount(){
     this.getMovieList()
+    this.getMoviesGenres()
   }
 
   getMovieList=()=>
@@ -23,16 +26,24 @@ class App extends Component{
       movies: data.results
     }))
 
+  getMoviesGenres=()=>
+    this.movieService.getGenres()
+    .then(obj => this.setState({
+      genres: obj.genres
+    }))
+
   render(){
-    const {movies}=this.state
+    const {movies, genres}=this.state
     return(
-      <div className="app">
-        <div className="wrapper">
-          <Header />
-          <SearchInput />
-          <Content movies={movies}/>
+      <GenresProvider value={genres}>
+        <div className="app">
+          <div className="wrapper">
+            <Header />
+            <SearchInput />
+            <Content movies={movies}/>
+          </div>
         </div>
-      </div>
+      </GenresProvider>
     )
   }
 }

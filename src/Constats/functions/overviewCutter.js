@@ -1,11 +1,12 @@
 import React from 'react'
 
 const overviewCutter=text=> {
+    const overview = text.split(' ')
     if(!text){
         return <span className="nodescription">No description</span>
     }
-    if(text.split(' ').length > 20){
-        return text.split(' ').slice(0, 15).concat(["..."]).join(' ')
+    if(overview.length > 20){
+        return `${overview.slice(0, 20).join(' ')}...`
     }
     return text 
 }

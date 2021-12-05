@@ -1,0 +1,34 @@
+@import "../../Constats/constats.scss";
+
+.description__genre ul {
+  list-style: none;
+  display: flex;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+  padding-inline-start: 0;
+}
+
+.description__genre ul li {
+  margin-top: 5px;
+  margin-right: 5px;
+  background-color: $genreBackground;
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+}
+
+.description__genre ul span {
+  display: inline-block;
+  transform: translateY(-1.5px);
+  font-size: 12px;
+  padding: 0px 5px;
+  color: $textColor;
+  white-space: nowrap;
+}
+
+.description__genre ul li:first-child {
+  margin-left: 0px;
+}
+
+.description__genre ul li:last-child {
+  margin-right: 0px;
+}

@@ -1,9 +1,12 @@
 import React from "react"
 import {format} from "date-fns"
+import {Rate} from "antd"
+import Genres from "../Genres"
+import { GenresConsumer } from "../../context"
 import "./card.scss"
 import {IMAGE_API, fakePoster} from "../../Constats/constants"
-import overviewCutter from "../../Constats/functions"
-
+import overviewCutter from "../../Constats/functions/overviewCutter"
+import ratingColor from "../../Constats/functions/ratingColor"
 
 const Card=({...children})=>{
   const {
@@ -11,7 +14,9 @@ const Card=({...children})=>{
     overview, 
     vote_average: voteAverage, 
     release_date: releaseDate, 
-    poster_path: posterPath}=children
+    poster_path: posterPath,
+    genre_ids: genreIds
+  }=children
   return(  
     <div className="card">
       <img 
@@ -19,25 +24,33 @@ const Card=({...children})=>{
         src={!posterPath ? fakePoster : IMAGE_API + posterPath} 
         alt={title}/>
       <div className="card__description">
-        <div className="film__rating">
+        <div className={ratingColor(voteAverage)}>
           <span>{voteAverage.toFixed(1)}</span>
         </div>
         <div className="description__content">
           <h5 className="description__title">{title}</h5>
           <div className="released">
             <span className="released--date">
-              {releaseDate ? format(new Date(releaseDate), `MMMM dd, y`) : '...'}
+              {releaseDate && format(new Date(releaseDate), `MMMM dd, y`)}
             </span>
           </div>
-          <div className="description__genre">
-            action             
-          </div>
+          <GenresConsumer>
+            {(genres) => 
+              <Genres 
+                genres={genres}
+                genreIds={genreIds}   
+              />
+            }
+          </GenresConsumer>
           <div className="description__text">
             <p>{overviewCutter(overview)}</p>
           </div>
         </div>
         <div className="card__rating">
-          stars                           
+          <Rate 
+            count={10}
+            allowHalf
+          />                          
         </div>
       </div>
     </div>  
