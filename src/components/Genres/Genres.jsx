@@ -6,8 +6,8 @@ const Genres=({genres, genreIds})=>{
   const genresList = genres
     .map(el => genreIds.includes(el.id) && el.name )
     .filter(str => str !== false)
-    .map(filmGenre => (
-      <li>
+    .map((filmGenre, index) => (
+      <li key={Math.ceil(Math.random()*19*index)}>
         <span>{filmGenre}</span>
       </li>
     ))
