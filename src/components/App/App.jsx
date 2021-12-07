@@ -6,6 +6,7 @@ import Header from "../Header"
 import SearchInput from "../SearchInput"
 import Content from "../Content"
 import Spinner from "../Spinner"
+import Paginator from "../Pagination"
 import MovieService from "../../service/Service"
 import {GenresProvider} from "../../context"
 
@@ -13,7 +14,10 @@ class App extends Component{
   state={
     movies: [],
     genres: [],
-    loading: true
+    loading: true,
+    currentPage: 1,
+    totalPages: 1,
+    // inputValue: ''
   }
 
   movieService = new MovieService()
@@ -50,11 +54,15 @@ class App extends Component{
     this.movieService.getSearchMovies(text)
       .then(searchList => this.setState({
         movies: searchList.results,
+        currentPage: searchList.page,
+        totalPages: searchList.total_results
       }))
   }
 
+
+
   render(){
-    const {movies, genres, loading}=this.state
+    const {movies, genres, loading, currentPage, totalPages}=this.state
     return(
       <GenresProvider value={genres}>
         <div className="app">
@@ -64,6 +72,10 @@ class App extends Component{
               getSearchList={this.getSearchList} 
             />
             {loading ? <Spinner /> : <Content movies={movies}/>}
+            <Paginator 
+              current={currentPage} 
+              total={totalPages}
+            />            
           </div>
         </div>
       </GenresProvider>
