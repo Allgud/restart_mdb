@@ -2,7 +2,7 @@
 
 .pagination {
   width: 100%;
-  padding: 5px;
+  padding: 1rem;
   margin-top: 2rem;
   margin-bottom: 0;
   display: flex;
@@ -10,8 +10,10 @@
   align-items: center;
 }
 
-.ant-pagination-item {
-  margin: 0rem 0.5rem;
+.ant-pagination.mini .ant-pagination-item {
+  font-size: 12px;
+  margin: 0px 0.25rem;
+  color: $textColor;
 }
 
 .ant-pagination-item-active {

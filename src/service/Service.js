@@ -22,6 +22,11 @@ class MovieService {
     getSearchMovies(str) {
       return this.getResource(SEARCH_API + str)
     }
+
+    changePage(str, num=1){
+      const page=`&page=${num}`
+      return this.getResource(SEARCH_API + str + page)
+    }
 }
 
 export default MovieService

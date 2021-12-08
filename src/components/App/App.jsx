@@ -1,7 +1,7 @@
 import React,{Component} from "react"
 import "./app.scss"
 import "antd/dist/antd.css"
-// import {debounce} from "lodash"
+import {debounce} from "lodash"
 import Header from "../Header"
 import SearchInput from "../SearchInput"
 import Content from "../Content"
@@ -17,15 +17,29 @@ class App extends Component{
     loading: true,
     currentPage: 1,
     totalPages: 1,
-    // inputValue: ''
+    inputValue: ''
   }
 
   movieService = new MovieService()
+
+  changeInputValue=debounce(string=>{
+    if(!string) return
+    this.setState({
+      inputValue: string
+    })}, 500
+  )
 
   componentDidMount(){
     this.createGuestSession()
     this.getMovieList()
     this.getMoviesGenres()
+  }
+
+  componentDidUpdate(__, prev){
+    const {inputValue}=this.state
+    if(inputValue !== prev.inputValue){
+      this.getSearchList()
+    }
   }
 
   componentWillUnmount(){
@@ -49,33 +63,45 @@ class App extends Component{
     this.movieService.newGuestSession()
       .then(sessionId => localStorage.setItem('id', sessionId.guest_session_id))
   
-  getSearchList= text =>{
-    if(!text) return
-    this.movieService.getSearchMovies(text)
+  getSearchList=()=>{
+    const {inputValue}=this.state
+    this.setState({loading: true})
+    this.movieService.getSearchMovies(inputValue)
       .then(searchList => this.setState({
+        loading: false,
         movies: searchList.results,
         currentPage: searchList.page,
         totalPages: searchList.total_results
       }))
   }
 
-
+  changePage=num=>{
+    this.setState({loading: true})
+    const {inputValue}=this.state
+    this.movieService.changePage(inputValue, num)
+      .then(changedList => this.setState({
+        loading: false,
+        movies: changedList.results,
+        currentPage: changedList.page,
+      }))
+  }
 
   render(){
-    const {movies, genres, loading, currentPage, totalPages}=this.state
+    const {movies, genres, loading, inputValue, currentPage, totalPages}=this.state
     return(
       <GenresProvider value={genres}>
         <div className="app">
           <div className="wrapper">
             <Header />
             <SearchInput
-              getSearchList={this.getSearchList} 
+              changeInputValue={this.changeInputValue} 
             />
             {loading ? <Spinner /> : <Content movies={movies}/>}
-            <Paginator 
+            {inputValue && <Paginator 
               current={currentPage} 
               total={totalPages}
-            />            
+              changePage={this.changePage}
+            />}            
           </div>
         </div>
       </GenresProvider>
