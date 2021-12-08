@@ -8,7 +8,7 @@ import Content from "../Content"
 import Spinner from "../Spinner"
 import Paginator from "../Pagination"
 import MovieService from "../../service/Service"
-import {GenresProvider} from "../../context"
+import {GenresProvider, TabProvider} from "../../context"
 
 class App extends Component{
   state={
@@ -17,7 +17,8 @@ class App extends Component{
     loading: true,
     currentPage: 1,
     totalPages: 1,
-    inputValue: ''
+    inputValue: '',
+    activeTab: "search"
   }
 
   movieService = new MovieService()
@@ -86,24 +87,28 @@ class App extends Component{
       }))
   }
 
+  setActiveTab=str=>this.setState({activeTab: str})
+
   render(){
-    const {movies, genres, loading, inputValue, currentPage, totalPages}=this.state
+    const {movies, genres, loading, inputValue, currentPage, totalPages, activeTab}=this.state
     return(
       <GenresProvider value={genres}>
-        <div className="app">
-          <div className="wrapper">
-            <Header />
-            <SearchInput
-              changeInputValue={this.changeInputValue} 
-            />
-            {loading ? <Spinner /> : <Content movies={movies}/>}
-            {inputValue && <Paginator 
-              current={currentPage} 
-              total={totalPages}
-              changePage={this.changePage}
-            />}            
+        <TabProvider value={{activeTab, setActiveTab:this.setActiveTab}}>
+          <div className="app">
+            <div className="wrapper">
+              <Header />
+              <SearchInput
+                changeInputValue={this.changeInputValue} 
+              />
+              {loading ? <Spinner /> : <Content movies={movies}/>}
+              {inputValue && <Paginator 
+                current={currentPage} 
+                total={totalPages}
+                changePage={this.changePage}
+              />}            
+            </div>
           </div>
-        </div>
+        </TabProvider>
       </GenresProvider>
     )
   }

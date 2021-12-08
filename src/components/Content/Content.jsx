@@ -17,7 +17,6 @@ const Content=({movies})=>{
   return(
     <div className="content">
       <div className="content__list">{movieList}</div>
-      <div className="content__pagination" />
     </div>
   )
 }

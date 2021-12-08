@@ -1,8 +1,12 @@
-import React from "react"
+import {createContext} from "react"
 
-const {
+export const {
     Provider: GenresProvider, 
     Consumer: GenresConsumer
-} = React.createContext()
+} = createContext()
 
-export {GenresProvider, GenresConsumer}
+
+export const {
+    Provider: TabProvider,
+    Consumer: TabConsumer
+} = createContext()

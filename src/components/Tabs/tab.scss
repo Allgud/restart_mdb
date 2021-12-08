@@ -1,0 +1,20 @@
+@import "../../Constats/constats.scss";
+
+.header__tab {
+  padding: 1rem;
+  position: relative;
+  border-bottom: 2px solid $borderColor;
+}
+
+.header__tab label {
+  cursor: pointer;
+}
+
+.header__tab input {
+  display: none;
+}
+
+.header__tab.active {
+  border-bottom: 3px solid $primaryColor;
+  color: $primaryColor;
+}

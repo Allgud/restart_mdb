@@ -1,31 +1,33 @@
 import React from "react"
+import Tab from "../Tabs"
+import {TabConsumer} from "../../context"
 import './header.scss'
+import {tabsArr} from "../../Constats/constants"
+import getRandomKey from "../../Constats/functions/getRandomKey"
 
-const Header = () => (
+const Header=()=>{
+  const tabs=tabsArr.map((tab, index) => (
+    <TabConsumer>
+      {
+        ({activeTab, setActiveTab})=>(
+          <Tab 
+            // Здесь косяк. Не срабатывает getRandomKey
+            key={getRandomKey(index)}
+            name={tab}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+        )
+      }
+    </TabConsumer>
+  ))
+  return(
   <div className="header">
     <ul className="header__tabs">
-      <li className="header__tab">
-        <label htmlFor="search--tab">
-          <input 
-            id="search--tab" 
-            type="radio" 
-            name="tabs" 
-            value="search"
-          />Search
-        </label>
-      </li>
-      <li className="header__tab">
-        <label htmlFor="rated--tab">
-          <input 
-            id="rated--tab" 
-            type="radio" 
-            name="tabs" 
-            value="search"
-          />Rated
-        </label>
-      </li>
+      {tabs}
     </ul>
   </div>
-)
+  )
+}
 
 export default Header

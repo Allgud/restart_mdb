@@ -1,0 +1,1 @@
+export default num=>(Date.now + num)

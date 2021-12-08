@@ -13,4 +13,5 @@ export const POST_OPTIONS = {
         'Content-type': 'application/json'
     }
 }
+export const tabsArr=["search", "rated"]
 
