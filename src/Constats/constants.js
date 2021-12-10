@@ -6,12 +6,8 @@ export const fakePoster = 'https://images.unsplash.com/photo-1518676590629-3dcbd
 export const SEARCH_API = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=`
 export const FEATURED_API = `${BASE_URL}/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc`
 export const GENRES_API = `${BASE_URL}/genre/movie/list?api_key=${API_KEY}`
-export const POST_OPTIONS = {
-    method: 'POST',
-    body: JSON.stringify(),
-    headers: {
-        'Content-type': 'application/json'
-    }
-}
+export const RATE_API = `${BASE_URL}/movie/`
+export const RATING_QUERIES = `/rating?api_key=${API_KEY}&guest_session_id=${localStorage.getItem('id')}`
+export const RATING_API = `${BASE_URL}/guest_session/${localStorage.getItem('id')}/rated/movies?api_key=${API_KEY}&language=en-US&sort_by=created_at.asc`
 export const tabsArr=["search", "rated"]
 

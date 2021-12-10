@@ -8,7 +8,7 @@ import Content from "../Content"
 import Spinner from "../Spinner"
 import Paginator from "../Pagination"
 import MovieService from "../../service/Service"
-import {GenresProvider, TabProvider} from "../../context"
+import {GenresProvider, TabProvider, RatingProvider} from "../../context"
 
 class App extends Component{
   state={
@@ -37,9 +37,12 @@ class App extends Component{
   }
 
   componentDidUpdate(__, prev){
-    const {inputValue}=this.state
+    const {inputValue, activeTab}=this.state
     if(inputValue !== prev.inputValue){
       this.getSearchList()
+    }
+    if(activeTab === "rated"){
+      this.getRatedList()
     }
   }
 
@@ -87,27 +90,39 @@ class App extends Component{
       }))
   }
 
+  getRatedList=()=>
+    this.movieService.getRatedMovies()
+      .then(ratedList => this.setState({
+        movies: ratedList.results,
+        currentPage: ratedList.page
+      }))
+
   setActiveTab=str=>this.setState({activeTab: str})
+
+  rateMovie=(val, movieId)=>
+    this.movieService.postRating(val, movieId)
 
   render(){
     const {movies, genres, loading, inputValue, currentPage, totalPages, activeTab}=this.state
     return(
       <GenresProvider value={genres}>
         <TabProvider value={{activeTab, setActiveTab:this.setActiveTab}}>
-          <div className="app">
-            <div className="wrapper">
-              <Header />
-              <SearchInput
-                changeInputValue={this.changeInputValue} 
-              />
-              {loading ? <Spinner /> : <Content movies={movies}/>}
-              {inputValue && <Paginator 
-                current={currentPage} 
-                total={totalPages}
-                changePage={this.changePage}
-              />}            
+          <RatingProvider value={this.rateMovie}>
+            <div className="app">
+              <div className="wrapper">
+                <Header />
+                <SearchInput
+                  changeInputValue={this.changeInputValue} 
+                />
+                {loading ? <Spinner /> : <Content movies={movies}/>}
+                {inputValue && <Paginator 
+                  current={currentPage} 
+                  total={totalPages}
+                  changePage={this.changePage}
+                />}            
+              </div>
             </div>
-          </div>
+          </RatingProvider>
         </TabProvider>
       </GenresProvider>
     )

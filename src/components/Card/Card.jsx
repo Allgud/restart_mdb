@@ -2,7 +2,7 @@ import React from "react"
 import {format} from "date-fns"
 import {Rate} from "antd"
 import Genres from "../Genres"
-import { GenresConsumer } from "../../context"
+import {GenresConsumer, RatingConsumer} from "../../context"
 import "./card.scss"
 import {IMAGE_API, fakePoster} from "../../Constats/constants"
 import overviewCutter from "../../Constats/functions/overviewCutter"
@@ -10,6 +10,7 @@ import ratingColor from "../../Constats/functions/ratingColor"
 
 const Card=({...children})=>{
   const {
+    id,
     title, 
     overview, 
     vote_average: voteAverage, 
@@ -47,10 +48,17 @@ const Card=({...children})=>{
           </div>
         </div>
         <div className="card__rating">
-          <Rate 
-            count={10}
-            allowHalf
-          />                          
+          <RatingConsumer>
+            {
+              rateMovie=>(
+                <Rate 
+                  count={10}
+                  allowHalf
+                  onChange={val=>rateMovie(val, id)}
+                /> 
+              )
+            }
+          </RatingConsumer>                         
         </div>
       </div>
     </div>  

@@ -1,14 +1,14 @@
 import React from "react"
 import PropTypes from "prop-types"
 import "./genres.scss"
-import getRandomKey from "../../Constats/functions/getRandomKey"
+import getUniqueKey from "../../Constats/functions/getUniqueKey"
 
 const Genres=({genres, genreIds})=>{
   const genresList = genres
     .map(el => genreIds.includes(el.id) && el.name )
     .filter(str => str !== false)
     .map((filmGenre, index) => (
-      <li key={getRandomKey(index)}>
+      <li key={getUniqueKey(index)}>
         <span>{filmGenre}</span>
       </li>
     ))
