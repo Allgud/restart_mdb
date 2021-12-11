@@ -41,7 +41,7 @@ class App extends Component{
     if(inputValue !== prev.inputValue){
       this.getSearchList()
     }
-    if(activeTab === "rated"){
+    if(activeTab==="rated"){
       this.getRatedList()
     }
   }

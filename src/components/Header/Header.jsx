@@ -3,24 +3,25 @@ import Tab from "../Tabs"
 import {TabConsumer} from "../../context"
 import './header.scss'
 import {tabsArr} from "../../Constats/constants"
-import getUniqueKey from "../../Constats/functions/getUniqueKey"
 
 const Header=()=>{
-  const tabs=tabsArr.map((tab, index) => (
-    <TabConsumer>
-      {
-        ({activeTab, setActiveTab})=>(
-          <Tab 
-            // Здесь косяк. Не срабатывает getRandomKey
-            key={getUniqueKey(index)}
-            name={tab}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-        )
-      }
-    </TabConsumer>
-  ))
+  const tabs=tabsArr.map(tab=>{
+    const {id, title}=tab
+    return(
+      <TabConsumer>
+        {
+          ({activeTab, setActiveTab})=>(
+            <Tab 
+              key={id}
+              name={title}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          )
+        }
+      </TabConsumer>
+    )
+  })
   return(
   <div className="header">
     <ul className="header__tabs">

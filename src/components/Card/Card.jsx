@@ -55,7 +55,7 @@ const Card=({...children})=>{
                   count={10}
                   allowHalf
                   onChange={val=>rateMovie(val, id)}
-                /> 
+                />
               )
             }
           </RatingConsumer>                         
