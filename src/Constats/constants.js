@@ -9,4 +9,4 @@ export const GENRES_API = `${BASE_URL}/genre/movie/list?api_key=${API_KEY}`
 export const RATE_API = `${BASE_URL}/movie/`
 export const RATING_QUERIES = `/rating?api_key=${API_KEY}&guest_session_id=${localStorage.getItem('id')}`
 export const RATING_API = `${BASE_URL}/guest_session/${localStorage.getItem('id')}/rated/movies?api_key=${API_KEY}&language=en-US&sort_by=created_at.asc`
-export const tabsArr=[{id: "sh", title: "search"}, {id: "rt", title: "rated"}]
+export const tabsArr=["search", "rated"]

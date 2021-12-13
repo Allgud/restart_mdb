@@ -9,6 +9,7 @@ import Spinner from "../Spinner"
 import Paginator from "../Pagination"
 import MovieService from "../../service/Service"
 import {GenresProvider, TabProvider, RatingProvider} from "../../context"
+import AlertMessage from "../AlertMessage"
 
 class App extends Component{
   state={
@@ -18,7 +19,9 @@ class App extends Component{
     currentPage: 1,
     totalPages: 1,
     inputValue: '',
-    activeTab: "search"
+    activeTab: "search",
+    alert: false,
+    error: null
   }
 
   movieService = new MovieService()
@@ -37,12 +40,15 @@ class App extends Component{
   }
 
   componentDidUpdate(__, prev){
-    const {inputValue, activeTab}=this.state
+    const {inputValue, activeTab, error}=this.state
     if(inputValue !== prev.inputValue){
       this.getSearchList()
     }
-    if(activeTab==="rated"){
+    if(activeTab === "rated"){
       this.getRatedList()
+    }
+    if(error !== prev.error){
+      this.showAlert()
     }
   }
 
@@ -56,16 +62,19 @@ class App extends Component{
         movies: data.results,
         loading: false
       }))
+      .catch(this.setError)
 
   getMoviesGenres=()=>
     this.movieService.getGenres()
       .then(obj => this.setState({
         genres: obj.genres
       }))
+      .catch(this.setError)
 
   createGuestSession=()=>
     this.movieService.newGuestSession()
       .then(sessionId => localStorage.setItem('id', sessionId.guest_session_id))
+      .catch(this.setError)
   
   getSearchList=()=>{
     const {inputValue}=this.state
@@ -77,6 +86,7 @@ class App extends Component{
         currentPage: searchList.page,
         totalPages: searchList.total_results
       }))
+      .catch(this.setError)
   }
 
   changePage=num=>{
@@ -88,6 +98,7 @@ class App extends Component{
         movies: changedList.results,
         currentPage: changedList.page,
       }))
+      .catch(this.setError)
   }
 
   getRatedList=()=>
@@ -96,32 +107,48 @@ class App extends Component{
         movies: ratedList.results,
         currentPage: ratedList.page
       }))
+      .catch(this.setError)
+
+  showAlert=()=>this.setState({alert: true})
+
+  hideAlert=()=>this.setState({alert: false})
 
   setActiveTab=str=>this.setState({activeTab: str})
+
+  setError=(err)=>
+    this.setState({
+      loading: false,
+      error: err
+    })
 
   rateMovie=(val, movieId)=>
     this.movieService.postRating(val, movieId)
 
   render(){
-    const {movies, genres, loading, inputValue, currentPage, totalPages, activeTab}=this.state
+    const {movies, genres, loading, inputValue, currentPage, totalPages, activeTab, alert, error}=this.state
     return(
       <GenresProvider value={genres}>
         <TabProvider value={{activeTab, setActiveTab:this.setActiveTab}}>
           <RatingProvider value={this.rateMovie}>
-            <div className="app">
-              <div className="wrapper">
-                <Header />
-                <SearchInput
-                  changeInputValue={this.changeInputValue} 
-                />
-                {loading ? <Spinner /> : <Content movies={movies}/>}
-                {inputValue && <Paginator 
-                  current={currentPage} 
-                  total={totalPages}
-                  changePage={this.changePage}
-                />}            
-              </div>
+          <div className="app">
+            <div className="wrapper">
+              {alert && 
+                <AlertMessage 
+                  hideAlert={this.hideAlert}
+                  error={error}
+                />}
+              <Header />
+              <SearchInput
+                changeInputValue={this.changeInputValue} 
+              />
+              {loading ? <Spinner /> : <Content movies={movies}/>}
+              {inputValue && <Paginator 
+                current={currentPage} 
+                total={totalPages}
+                changePage={this.changePage}
+              />}            
             </div>
+          </div>
           </RatingProvider>
         </TabProvider>
       </GenresProvider>

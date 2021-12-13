@@ -1,0 +1,13 @@
+.card__rating {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.ant-rate li {
+  font-size: 16px;
+}
+
+.ant-rate li:not(:last-child) {
+  margin-right: 7px;
+}

@@ -5,15 +5,13 @@ import './header.scss'
 import {tabsArr} from "../../Constats/constants"
 
 const Header=()=>{
-  const tabs=tabsArr.map(tab=>{
-    const {id, title}=tab
-    return(
+  const tabs=tabsArr.map(tab=>(
       <TabConsumer>
         {
           ({activeTab, setActiveTab})=>(
             <Tab 
-              key={id}
-              name={title}
+              key={tab}
+              name={tab}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />
@@ -21,7 +19,7 @@ const Header=()=>{
         }
       </TabConsumer>
     )
-  })
+  )
   return(
   <div className="header">
     <ul className="header__tabs">

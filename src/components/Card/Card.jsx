@@ -1,6 +1,6 @@
 import React from "react"
 import {format} from "date-fns"
-import {Rate} from "antd"
+import RatingStars from "../RatingStars"
 import Genres from "../Genres"
 import {GenresConsumer, RatingConsumer} from "../../context"
 import "./card.scss"
@@ -16,7 +16,8 @@ const Card=({...children})=>{
     vote_average: voteAverage, 
     release_date: releaseDate, 
     poster_path: posterPath,
-    genre_ids: genreIds
+    genre_ids: genreIds,
+    rating: userRating
   }=children
   return(  
     <div className="card">
@@ -36,7 +37,7 @@ const Card=({...children})=>{
             </span>
           </div>
           <GenresConsumer>
-            {(genres) => 
+            {genres => 
               <Genres 
                 genres={genres}
                 genreIds={genreIds}   
@@ -47,19 +48,15 @@ const Card=({...children})=>{
             <p>{overviewCutter(overview)}</p>
           </div>
         </div>
-        <div className="card__rating">
-          <RatingConsumer>
-            {
-              rateMovie=>(
-                <Rate 
-                  count={10}
-                  allowHalf
-                  onChange={val=>rateMovie(val, id)}
-                />
-              )
-            }
-          </RatingConsumer>                         
-        </div>
+        <RatingConsumer>
+          {rateMovie=>(
+            <RatingStars 
+              rateMovie={rateMovie}
+              id={id}
+              userRating={userRating}
+            />
+          )}
+        </RatingConsumer>                         
       </div>
     </div>  
   ) 

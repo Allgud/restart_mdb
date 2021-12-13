@@ -3,6 +3,9 @@ import {FEATURED_API, GENRES_API, GUEST_SESSION_API, RATING_API, RATE_API, RATIN
 class MovieService {
   async getResource(api, options){  
     const response = await fetch(api, options)
+    if(!response.ok&&response.status!==422){
+      throw new Error(`${response.status}`)
+    }
     const res = await response.json()
     return res
   }
