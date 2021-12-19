@@ -10,3 +10,7 @@ export const RATE_API = `${BASE_URL}/movie/`
 export const RATING_QUERIES = `/rating?api_key=${API_KEY}&guest_session_id=${localStorage.getItem('id')}`
 export const RATING_API = `${BASE_URL}/guest_session/${localStorage.getItem('id')}/rated/movies?api_key=${API_KEY}&language=en-US&sort_by=created_at.asc`
 export const tabsArr=["search", "rated"]
+export const rateChildren=[
+  {isRated: false, allowHalf: true},
+  {isRated: true, disabled: true}
+]

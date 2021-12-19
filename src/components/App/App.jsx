@@ -21,7 +21,7 @@ class App extends Component{
     inputValue: '',
     activeTab: "search",
     alert: false,
-    error: null
+    error: ''
   }
 
   movieService = new MovieService()
@@ -44,11 +44,17 @@ class App extends Component{
     if(inputValue !== prev.inputValue){
       this.getSearchList()
     }
-    if(activeTab === "rated"){
+    if(activeTab!==prev.activeTab && activeTab==="rated"){
       this.getRatedList()
     }
     if(error !== prev.error){
       this.showAlert()
+    }
+    if(activeTab!==prev.activeTab && activeTab==="search" && inputValue!==""){
+      this.getSearchList()
+    }
+    if(activeTab!==prev.activeTab && activeTab==="search" && inputValue===""){
+      this.getMovieList()
     }
   }
 
@@ -58,57 +64,55 @@ class App extends Component{
 
   getMovieList=()=>
     this.movieService.getMovies()
-      .then(data => this.setState({
-        movies: data.results,
-        loading: false
-      }))
-      .catch(this.setError)
+    .then(data => this.setState({
+      movies: data.results,
+      loading: false}))
+    .catch(this.setError)
 
   getMoviesGenres=()=>
     this.movieService.getGenres()
-      .then(obj => this.setState({
-        genres: obj.genres
-      }))
-      .catch(this.setError)
+    .then(obj => this.setState({
+      genres: obj.genres}))
+    .catch(this.setError)
 
   createGuestSession=()=>
     this.movieService.newGuestSession()
-      .then(sessionId => localStorage.setItem('id', sessionId.guest_session_id))
-      .catch(this.setError)
+    .then(sessionId => localStorage.setItem('id', sessionId.guest_session_id))
+    .catch(this.setError)
   
   getSearchList=()=>{
     const {inputValue}=this.state
     this.setState({loading: true})
     this.movieService.getSearchMovies(inputValue)
-      .then(searchList => this.setState({
-        loading: false,
-        movies: searchList.results,
-        currentPage: searchList.page,
-        totalPages: searchList.total_results
-      }))
-      .catch(this.setError)
+    .then(searchList => this.setState({
+      loading: false,
+      movies: searchList.results,
+      currentPage: searchList.page,
+      totalPages: searchList.total_results
+    }))
+    .catch(this.setError)
   }
 
   changePage=num=>{
     this.setState({loading: true})
     const {inputValue}=this.state
     this.movieService.changePage(inputValue, num)
-      .then(changedList => this.setState({
-        loading: false,
-        movies: changedList.results,
-        currentPage: changedList.page,
-      }))
-      .catch(this.setError)
+    .then(changedList => this.setState({
+      loading: false,
+      movies: changedList.results,
+      currentPage: changedList.page,
+    }))
+    .catch(this.setError)
   }
 
   getRatedList=()=>
     this.movieService.getRatedMovies()
-      .then(ratedList => this.setState({
-        movies: ratedList.results,
-        currentPage: ratedList.page
-      }))
-      .catch(this.setError)
-
+    .then(ratedList => this.setState({
+      movies: ratedList.results,
+      currentPage: ratedList.page
+    }))
+    .catch(this.setError)  
+    
   showAlert=()=>this.setState({alert: true})
 
   hideAlert=()=>this.setState({alert: false})
@@ -118,14 +122,13 @@ class App extends Component{
   setError=(err)=>
     this.setState({
       loading: false,
-      error: err
+      error: err.message
     })
 
-  rateMovie=(val, movieId)=>
-    this.movieService.postRating(val, movieId)
+  rateMovie=(val, movieId)=>this.movieService.postRating(val, movieId)
 
   render(){
-    const {movies, genres, loading, inputValue, currentPage, totalPages, activeTab, alert, error}=this.state
+    const {movies, genres, loading, currentPage, totalPages, activeTab, alert, error, inputValue}=this.state
     return(
       <GenresProvider value={genres}>
         <TabProvider value={{activeTab, setActiveTab:this.setActiveTab}}>
@@ -139,10 +142,11 @@ class App extends Component{
                 />}
               <Header />
               <SearchInput
-                changeInputValue={this.changeInputValue} 
+                changeInputValue={this.changeInputValue}
+                activeTab={activeTab} 
               />
               {loading ? <Spinner /> : <Content movies={movies}/>}
-              {inputValue && <Paginator 
+              {(activeTab==="search" && inputValue) && <Paginator 
                 current={currentPage} 
                 total={totalPages}
                 changePage={this.changePage}

@@ -6,7 +6,7 @@ import {Alert} from "antd"
 const AlertMessage=({error, hideAlert})=>(
   <div className="alert">
     <Alert 
-      message={error.message}
+      message={error}
       type="error"
       closable
       afterClose={hideAlert}    
@@ -15,7 +15,7 @@ const AlertMessage=({error, hideAlert})=>(
 )
 
 AlertMessage.propTypes={
-  error: PropTypes.objectOf(PropTypes.string).isRequired,
+  error: PropTypes.string.isRequired,
   hideAlert: PropTypes.func.isRequired
 }
 

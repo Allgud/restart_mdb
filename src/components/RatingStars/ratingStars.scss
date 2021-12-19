@@ -11,3 +11,9 @@
 .ant-rate li:not(:last-child) {
   margin-right: 7px;
 }
+
+@media (max-width: 768px) {
+  .ant-rate li:not(:last-child) {
+    margin-right: 0.9rem;
+  }
+}

@@ -53,7 +53,7 @@ const Card=({...children})=>{
             <RatingStars 
               rateMovie={rateMovie}
               id={id}
-              userRating={userRating}
+              userRating={userRating!==undefined ? userRating : 0}
             />
           )}
         </RatingConsumer>                         
